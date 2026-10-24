@@ -48,10 +48,11 @@
           <input type="password" id="loginPassword" required class="w-full mt-1 p-2 border rounded-lg focus:ring-amber-500 focus:border-amber-500" placeholder="••••••••">
         </div>
         <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg font-semibold shadow">Masuk</button>
+        
+        <!-- Info Khusus Akun Demo Pelanggan (Admin Disembunyikan) -->
         <div class="bg-amber-50 border border-amber-200 p-2.5 rounded-lg text-xs text-amber-800 mt-2">
-          <strong>Akun Pengujian (Demo):</strong><br>
-          • <b>Admin:</b> <code>admin</code> | Pass: <code>admin123</code><br>
-          • <b>Pelanggan:</b> <code>pelanggan</code> | Pass: <code>123456</code>
+          <strong>Akun Pengujian Pelanggan:</strong><br>
+          • <b>Username:</b> <code>pelanggan</code> | <b>Password:</b> <code>123456</code>
         </div>
       </form>
 
@@ -219,12 +220,11 @@
   <!-- JAVASCRIPT LOGIC -->
   <script>
     // ================= PENGATURAN NOMOR WA PEMILIK =================
-    // Ganti dengan nomor WhatsApp pemilik toko (format internasional: 628...)
     const OWNER_WHATSAPP_NUMBER = "6281234567890";
 
-    // Data Awal D'Laura's Kitchen
+    // Data Default (Password Admin Diperbarui ke 161006D3)
     const defaultUsers = [
-      { id: 1, username: "admin", password: "admin123", name: "Ibu Pemilik Toko", role: "admin", phone: OWNER_WHATSAPP_NUMBER, address: "D'Laura's Kitchen Pusat" },
+      { id: 1, username: "admin", password: "161006D3", name: "Ibu Pemilik Toko", role: "admin", phone: OWNER_WHATSAPP_NUMBER, address: "D'Laura's Kitchen Pusat" },
       { id: 2, username: "pelanggan", password: "123456", name: "Darryl Joshua", role: "customer", phone: "08987654321", address: "Jl. Boulevard No. 12, Manado" }
     ];
 
@@ -237,6 +237,13 @@
     ];
 
     let users = JSON.parse(localStorage.getItem("dlk_users")) || defaultUsers;
+    
+    // Pastikan password admin selalu tersinkronisasi ke 161006D3
+    const adminAccount = users.find(u => u.username === "admin");
+    if (adminAccount) {
+      adminAccount.password = "161006D3";
+    }
+
     let cakes = JSON.parse(localStorage.getItem("dlk_cakes")) || defaultCakes;
     let orders = JSON.parse(localStorage.getItem("dlk_orders")) || [];
     let currentUser = JSON.parse(localStorage.getItem("dlk_currentUser")) || null;
@@ -550,7 +557,6 @@
       document.getElementById("modalTotalPrice").innerText = "Rp " + total.toLocaleString('id-ID');
     }
 
-    // Simpan pesanan & langsung alihkan ke WhatsApp
     function confirmOrderAndRedirectWA() {
       const note = document.getElementById("orderNote").value.trim();
       const total = activeOrderCake.price * activeQty;
@@ -571,7 +577,6 @@
       persistData();
       closeOrderModal();
 
-      // Format Pesan WhatsApp Khusus D'Laura's Kitchen
       const waMessage = 
 `*PESANAN D'LAURA'S KITCHEN*
 ----------------------------------
@@ -596,7 +601,6 @@ Mohon konfirmasi pesanannya ya Bu, terima kasih!`;
       window.location.href = waUrl;
     }
 
-    // Render Pesanan Masuk (Admin)
     function renderAdminOrders() {
       const container = document.getElementById("adminOrderList");
       document.getElementById("orderCountBadge").innerText = orders.length;
