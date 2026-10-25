@@ -49,7 +49,7 @@
         </div>
         <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg font-semibold shadow">Masuk</button>
         
-        <!-- Info Khusus Akun Demo Pelanggan (Admin Disembunyikan) -->
+        <!-- Info Akun Pelanggan (Admin disembunyikan) -->
         <div class="bg-amber-50 border border-amber-200 p-2.5 rounded-lg text-xs text-amber-800 mt-2">
           <strong>Akun Pengujian Pelanggan:</strong><br>
           • <b>Username:</b> <code>pelanggan</code> | <b>Password:</b> <code>123456</code>
@@ -154,8 +154,13 @@
   <!-- ================= MODAL PEMESANAN (PELANGGAN) ================= -->
   <div id="orderModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-xl">
-      <h3 id="modalCakeName" class="font-bold text-lg text-gray-800">Nama Kue</h3>
-      <p id="modalCakePrice" class="text-sm text-amber-600 font-bold">Rp 0</p>
+      <div class="flex space-x-3 items-center">
+        <img id="modalCakeImg" src="" alt="Kue" class="w-16 h-16 rounded-xl object-cover border">
+        <div>
+          <h3 id="modalCakeName" class="font-bold text-base text-gray-800">Nama Kue</h3>
+          <p id="modalCakePrice" class="text-sm text-amber-600 font-bold">Rp 0</p>
+        </div>
+      </div>
 
       <div>
         <label class="text-xs font-semibold text-gray-600">Jumlah Pesan (pcs)</label>
@@ -193,11 +198,24 @@
     </div>
   </div>
 
-  <!-- ================= MODAL TAMBAH/EDIT KUE (ADMIN) ================= -->
+  <!-- ================= MODAL TAMBAH/EDIT KUE DENGAN FOTO (ADMIN) ================= -->
   <div id="cakeAdminModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-3 shadow-xl">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-3 shadow-xl max-h-[90vh] overflow-y-auto">
       <h3 class="font-bold text-base text-gray-800" id="cakeModalTitle">Tambah Menu Baru</h3>
       <input type="hidden" id="editCakeId">
+      
+      <!-- Input Upload Foto Manual -->
+      <div>
+        <label class="text-xs font-semibold text-gray-600">Foto Kue (Pilih dari HP/Laptop)</label>
+        <input type="file" id="adminInputImageFile" accept="image/*" onchange="handleImageUpload(event)" class="w-full text-xs text-gray-500 mt-1 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-700 hover:file:bg-amber-200">
+        
+        <!-- Pratinjau Foto -->
+        <div id="imagePreviewContainer" class="mt-2 flex items-center space-x-3">
+          <img id="imagePreview" src="" alt="Pratinjau" class="w-16 h-16 object-cover rounded-lg border">
+          <span class="text-[11px] text-gray-400">Pratinjau foto kue</span>
+        </div>
+      </div>
+
       <div>
         <label class="text-xs font-semibold text-gray-600">Nama Kue</label>
         <input type="text" id="adminInputName" class="w-full border rounded-lg p-2 text-sm mt-1" placeholder="Contoh: Panada Spesial">
@@ -220,25 +238,28 @@
   <!-- JAVASCRIPT LOGIC -->
   <script>
     // ================= PENGATURAN NOMOR WA PEMILIK =================
-    const OWNER_WHATSAPP_NUMBER = "6281234567890";
+    // Nomor HP yang baru (+62 821-1212-3230)
+    const OWNER_WHATSAPP_NUMBER = "6282112123230";
 
-    // Data Default (Password Admin Diperbarui ke 161006D3)
+    // Placeholder Gambar Default
+    const DEFAULT_CAKE_IMAGE = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&auto=format&fit=crop&q=60";
+
     const defaultUsers = [
       { id: 1, username: "admin", password: "161006D3", name: "Ibu Pemilik Toko", role: "admin", phone: OWNER_WHATSAPP_NUMBER, address: "D'Laura's Kitchen Pusat" },
       { id: 2, username: "pelanggan", password: "123456", name: "Darryl Joshua", role: "customer", phone: "08987654321", address: "Jl. Boulevard No. 12, Manado" }
     ];
 
     const defaultCakes = [
-      { id: 1, name: "Klappertaart Original", price: 25000, status: "tersedia", desc: "Kelapa muda lembut, kismis, taburan almond & kayu manis." },
-      { id: 2, name: "Panada Isi Cakalang", price: 5000, status: "tersedia", desc: "Roti goreng lembut isi suwiran ikan cakalang bumbu rica." },
-      { id: 3, name: "Donat Gula Manado", price: 4000, status: "tersedia", desc: "Donat empuk bertabur gula salju manis pas." },
-      { id: 4, name: "Lalampa Bakar Cakalang", price: 6000, status: "kosong", desc: "Ketan bakar beraroma daun pisang isi cakalang pedas." },
-      { id: 5, name: "Kue Balapis Pandan", price: 15000, status: "tersedia", desc: "Lapis lembut harum pandan suji dan santan kelapa murni." }
+      { id: 1, name: "Klappertaart Original", price: 25000, status: "tersedia", desc: "Kelapa muda lembut, kismis, taburan almond & kayu manis.", image: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=300&auto=format&fit=crop&q=60" },
+      { id: 2, name: "Panada Isi Cakalang", price: 5000, status: "tersedia", desc: "Roti goreng lembut isi suwiran ikan cakalang bumbu rica.", image: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=300&auto=format&fit=crop&q=60" },
+      { id: 3, name: "Donat Gula Manado", price: 4000, status: "tersedia", desc: "Donat empuk bertabur gula salju manis pas.", image: "https://images.unsplash.com/photo-1527515862127-a4fc05baf7a5?w=300&auto=format&fit=crop&q=60" },
+      { id: 4, name: "Lalampa Bakar Cakalang", price: 6000, status: "kosong", desc: "Ketan bakar beraroma daun pisang isi cakalang pedas.", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&auto=format&fit=crop&q=60" },
+      { id: 5, name: "Kue Balapis Pandan", price: 15000, status: "tersedia", desc: "Lapis lembut harum pandan suji dan santan kelapa murni.", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&auto=format&fit=crop&q=60" }
     ];
 
     let users = JSON.parse(localStorage.getItem("dlk_users")) || defaultUsers;
     
-    // Pastikan password admin selalu tersinkronisasi ke 161006D3
+    // Pastikan password admin tersinkronisasi ke 161006D3
     const adminAccount = users.find(u => u.username === "admin");
     if (adminAccount) {
       adminAccount.password = "161006D3";
@@ -248,11 +269,54 @@
     let orders = JSON.parse(localStorage.getItem("dlk_orders")) || [];
     let currentUser = JSON.parse(localStorage.getItem("dlk_currentUser")) || null;
 
+    let tempUploadedImageBase64 = "";
+
     function persistData() {
       localStorage.setItem("dlk_users", JSON.stringify(users));
       localStorage.setItem("dlk_cakes", JSON.stringify(cakes));
       localStorage.setItem("dlk_orders", JSON.stringify(orders));
       localStorage.setItem("dlk_currentUser", JSON.stringify(currentUser));
+    }
+
+    // ================= FITUR KOMPRESI & UPLOAD FOTO =================
+    function handleImageUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          // Kompresi otomatis gambar ke canvas (max lebar/tinggi 350px)
+          const canvas = document.createElement("canvas");
+          const maxDim = 350;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > maxDim) {
+              height *= maxDim / width;
+              width = maxDim;
+            }
+          } else {
+            if (height > maxDim) {
+              width *= maxDim / height;
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Simpan hasil kompresi format JPEG kualitas 0.75
+          tempUploadedImageBase64 = canvas.toDataURL("image/jpeg", 0.75);
+          document.getElementById("imagePreview").src = tempUploadedImageBase64;
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
     }
 
     // ================= TAMPILAN VIEW =================
@@ -393,18 +457,23 @@
 
       cakes.forEach(cake => {
         const isTersedia = cake.status === "tersedia";
+        const cakeImg = cake.image || DEFAULT_CAKE_IMAGE;
+
         const div = document.createElement("div");
         div.className = "p-3 border rounded-xl bg-white shadow-sm flex flex-col justify-between";
         div.innerHTML = `
-          <div class="flex justify-between items-start">
-            <div>
-              <h4 class="font-bold text-gray-800">${cake.name}</h4>
-              <p class="text-xs text-gray-500">${cake.desc}</p>
+          <div class="flex space-x-3 items-start">
+            <img src="${cakeImg}" alt="${cake.name}" class="w-16 h-16 rounded-xl object-cover border shrink-0">
+            <div class="flex-1">
+              <div class="flex justify-between items-start">
+                <h4 class="font-bold text-gray-800 text-sm">${cake.name}</h4>
+                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold ${isTersedia ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                  ${isTersedia ? 'Tersedia' : 'Kosong'}
+                </span>
+              </div>
+              <p class="text-xs text-gray-500 mt-0.5">${cake.desc}</p>
               <p class="text-sm font-bold text-amber-600 mt-1">Rp ${cake.price.toLocaleString('id-ID')}</p>
             </div>
-            <span class="text-xs px-2 py-0.5 rounded-full font-bold ${isTersedia ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
-              ${isTersedia ? 'Tersedia' : 'Kosong'}
-            </span>
           </div>
 
           <div class="flex items-center justify-between border-t pt-2 mt-3 text-xs">
@@ -412,8 +481,8 @@
               Tandai: ${isTersedia ? 'KOSONGKAN STOK' : 'SEDIAKAN STOK'}
             </button>
             <div class="space-x-2">
-              <button onclick="openEditCakeModal(${cake.id})" class="text-blue-600 hover:underline">Ubah</button>
-              <button onclick="deleteCake(${cake.id})" class="text-red-500 hover:underline">Hapus</button>
+              <button onclick="openEditCakeModal(${cake.id})" class="text-blue-600 font-semibold hover:underline">Ubah / Ganti Foto</button>
+              <button onclick="deleteCake(${cake.id})" class="text-red-500 font-semibold hover:underline">Hapus</button>
             </div>
           </div>
         `;
@@ -436,17 +505,23 @@
       document.getElementById("adminInputName").value = "";
       document.getElementById("adminInputPrice").value = "";
       document.getElementById("adminInputDesc").value = "";
+      document.getElementById("adminInputImageFile").value = "";
+      tempUploadedImageBase64 = DEFAULT_CAKE_IMAGE;
+      document.getElementById("imagePreview").src = tempUploadedImageBase64;
       document.getElementById("cakeAdminModal").classList.remove("hidden");
     }
 
     function openEditCakeModal(id) {
       const cake = cakes.find(c => c.id === id);
       if (!cake) return;
-      document.getElementById("cakeModalTitle").innerText = "Ubah Data & Harga Kue";
+      document.getElementById("cakeModalTitle").innerText = "Ubah Data, Harga & Foto";
       document.getElementById("editCakeId").value = cake.id;
       document.getElementById("adminInputName").value = cake.name;
       document.getElementById("adminInputPrice").value = cake.price;
       document.getElementById("adminInputDesc").value = cake.desc;
+      document.getElementById("adminInputImageFile").value = "";
+      tempUploadedImageBase64 = cake.image || DEFAULT_CAKE_IMAGE;
+      document.getElementById("imagePreview").src = tempUploadedImageBase64;
       document.getElementById("cakeAdminModal").classList.remove("hidden");
     }
 
@@ -470,13 +545,15 @@
         cake.name = name;
         cake.price = price;
         cake.desc = desc;
+        if (tempUploadedImageBase64) cake.image = tempUploadedImageBase64;
       } else {
         cakes.push({
           id: Date.now(),
           name,
           price,
           status: "tersedia",
-          desc: desc || "Menu lezat D'Laura's Kitchen"
+          desc: desc || "Menu lezat D'Laura's Kitchen",
+          image: tempUploadedImageBase64 || DEFAULT_CAKE_IMAGE
         });
       }
 
@@ -503,20 +580,23 @@
 
       cakes.forEach(cake => {
         const isTersedia = cake.status === "tersedia";
+        const cakeImg = cake.image || DEFAULT_CAKE_IMAGE;
+
         const card = document.createElement("div");
-        card.className = `p-3.5 border rounded-xl flex justify-between items-center ${isTersedia ? 'bg-white shadow-sm' : 'bg-gray-100 opacity-60'}`;
+        card.className = `p-3 border rounded-xl flex items-center space-x-3 ${isTersedia ? 'bg-white shadow-sm' : 'bg-gray-100 opacity-60'}`;
         card.innerHTML = `
-          <div>
-            <div class="flex items-center space-x-2">
-              <h4 class="font-bold text-gray-800">${cake.name}</h4>
-              ${!isTersedia ? '<span class="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">KOSONG</span>' : ''}
+          <img src="${cakeImg}" alt="${cake.name}" class="w-16 h-16 rounded-xl object-cover border shrink-0">
+          <div class="flex-1">
+            <div class="flex items-center space-x-1.5">
+              <h4 class="font-bold text-gray-800 text-sm">${cake.name}</h4>
+              ${!isTersedia ? '<span class="text-[9px] bg-red-100 text-red-600 px-1 py-0.5 rounded font-bold">KOSONG</span>' : ''}
             </div>
-            <p class="text-xs text-gray-500 mt-0.5">${cake.desc}</p>
-            <p class="text-sm font-bold text-amber-600 mt-1">Rp ${cake.price.toLocaleString('id-ID')}</p>
+            <p class="text-[11px] text-gray-500 mt-0.5 line-clamp-1">${cake.desc}</p>
+            <p class="text-xs font-bold text-amber-600 mt-1">Rp ${cake.price.toLocaleString('id-ID')}</p>
           </div>
           <div>
             ${isTersedia ? `
-              <button onclick="openOrderModal(${cake.id})" class="bg-amber-600 hover:bg-amber-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow flex items-center space-x-1">
+              <button onclick="openOrderModal(${cake.id})" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow flex items-center space-x-1">
                 <i class="fa-solid fa-cart-plus"></i>
                 <span>Pesan</span>
               </button>
@@ -532,6 +612,7 @@
     function openOrderModal(cakeId) {
       activeOrderCake = cakes.find(c => c.id === cakeId);
       activeQty = 1;
+      document.getElementById("modalCakeImg").src = activeOrderCake.image || DEFAULT_CAKE_IMAGE;
       document.getElementById("modalCakeName").innerText = activeOrderCake.name;
       document.getElementById("modalCakePrice").innerText = "Rp " + activeOrderCake.price.toLocaleString('id-ID') + " / pcs";
       document.getElementById("modalAddressConfirm").innerText = currentUser.address;
@@ -577,6 +658,7 @@
       persistData();
       closeOrderModal();
 
+      // Format Pesan WhatsApp Khusus D'Laura's Kitchen
       const waMessage = 
 `*PESANAN D'LAURA'S KITCHEN*
 ----------------------------------
