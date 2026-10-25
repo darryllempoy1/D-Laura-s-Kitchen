@@ -21,14 +21,14 @@
     </div>
   </header>
 
-  <!-- Container Utama (Ukuran layar HP) -->
+  <!-- Container Utama -->
   <main class="max-w-md mx-auto min-h-screen bg-white shadow-lg relative p-4">
 
     <!-- ================= 1. VIEW AUTH (LOGIN & REGISTER) ================= -->
     <section id="viewAuth" class="space-y-6 py-6">
       <div class="text-center">
         <h2 class="text-2xl font-bold text-gray-800">D'Laura's Kitchen</h2>
-        <p class="text-sm text-gray-500 mt-1">Pesan aneka kue lezat dengan mudah & praktis</p>
+        <p class="text-sm text-gray-500 mt-1">Pesan aneka kue lezat khas Manado</p>
       </div>
 
       <!-- Tab Switch -->
@@ -40,8 +40,8 @@
       <!-- Form Login -->
       <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
         <div>
-          <label class="text-xs font-semibold text-gray-600">Username</label>
-          <input type="text" id="loginUsername" required class="w-full mt-1 p-2 border rounded-lg focus:ring-amber-500 focus:border-amber-500" placeholder="Masukkan username">
+          <label class="text-xs font-semibold text-gray-600">Username atau No. WhatsApp</label>
+          <input type="text" id="loginUsername" required class="w-full mt-1 p-2 border rounded-lg focus:ring-amber-500 focus:border-amber-500" placeholder="Ketik username / no wa">
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600">Password</label>
@@ -49,14 +49,14 @@
         </div>
         <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg font-semibold shadow">Masuk</button>
         
-        <!-- Info Akun Pelanggan (Admin disembunyikan) -->
         <div class="bg-amber-50 border border-amber-200 p-2.5 rounded-lg text-xs text-amber-800 mt-2">
-          <strong>Akun Pengujian Pelanggan:</strong><br>
-          • <b>Username:</b> <code>pelanggan</code> | <b>Password:</b> <code>123456</code>
+          <strong>Demo Akun Pelanggan:</strong><br>
+          • <b>Username:</b> <code>pelanggan</code> | <b>Password:</b> <code>123456</code><br>
+          <span class="text-[11px] text-gray-500 italic">*Atau gunakan akun baru yang sudah kamu daftarkan.</span>
         </div>
       </form>
 
-      <!-- Form Register (Pelanggan) -->
+      <!-- Form Register -->
       <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3 hidden">
         <div>
           <label class="text-xs font-semibold text-gray-600">Nama Lengkap</label>
@@ -64,15 +64,15 @@
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600">Username</label>
-          <input type="text" id="regUsername" required class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Username untuk login">
+          <input type="text" id="regUsername" required class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Contoh: darryl">
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600">No. WhatsApp</label>
-          <input type="tel" id="regPhone" required class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Contoh: 08123456789">
+          <input type="tel" id="regPhone" required class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Contoh: 082121196711">
         </div>
         <div>
-          <label class="text-xs font-semibold text-gray-600">Alamat Lengkap Pengiriman (Tersimpan di akun)</label>
-          <textarea id="regAddress" required rows="2" class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Alamat rumah lengkap untuk pengantaran"></textarea>
+          <label class="text-xs font-semibold text-gray-600">Alamat Lengkap Pengiriman (Tersimpan otomatis)</label>
+          <textarea id="regAddress" required rows="2" class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Contoh: E1 lantai 14 No 03"></textarea>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600">Password</label>
@@ -82,12 +82,12 @@
       </form>
     </section>
 
-    <!-- ================= 2. VIEW PELANGGAN (KATALOG & ORDER) ================= -->
+    <!-- ================= 2. VIEW PELANGGAN ================= -->
     <section id="viewPelanggan" class="space-y-4 hidden">
-      <!-- Profil Mini & Alamat Pelanggan -->
+      <!-- Mini Profil & Alamat -->
       <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex justify-between items-start">
         <div>
-          <p class="text-[11px] text-amber-700 font-medium">Pelanggan Terhubung:</p>
+          <p class="text-[11px] text-amber-700 font-medium">Pelanggan Aktif:</p>
           <h3 id="custNameDisplay" class="font-bold text-gray-800 text-sm">Nama Pelanggan</h3>
           <p id="custAddressDisplay" class="text-xs text-gray-600 mt-1 flex items-start">
             <i class="fa-solid fa-location-dot text-amber-600 mr-1 mt-0.5"></i> 
@@ -100,10 +100,10 @@
       <!-- Banner Toko -->
       <div class="bg-gradient-to-r from-amber-600 to-amber-700 text-white p-4 rounded-xl shadow">
         <h4 class="font-bold text-base">Menu D'Laura's Kitchen</h4>
-        <p class="text-xs opacity-90 mt-1">Pilih kue favoritmu dan langsung kirim detail pesanan ke WhatsApp kami!</p>
+        <p class="text-xs opacity-90 mt-1">Pilih kue dan langsung kirim pesananmu ke WhatsApp resmi kami!</p>
       </div>
 
-      <!-- Daftar Kue -->
+      <!-- List Kue Pelanggan -->
       <div>
         <h3 class="font-bold text-gray-700 mb-3 flex items-center">
           <i class="fa-solid fa-utensils mr-2 text-amber-600"></i> Menu Kue Hari Ini
@@ -114,7 +114,7 @@
       </div>
     </section>
 
-    <!-- ================= 3. VIEW ADMIN (MANAJEMEN KUE & PESANAN) ================= -->
+    <!-- ================= 3. VIEW ADMIN ================= -->
     <section id="viewAdmin" class="space-y-4 hidden">
       <div class="bg-gray-800 text-white p-3 rounded-xl flex justify-between items-center">
         <div>
@@ -123,13 +123,12 @@
         </div>
       </div>
 
-      <!-- Navigasi Tab Admin -->
       <div class="flex border-b border-gray-200 text-sm">
         <button id="adminTabKueBtn" onclick="switchAdminSubTab('katalog')" class="w-1/2 py-2 font-bold text-amber-600 border-b-2 border-amber-600">Daftar Kue</button>
         <button id="adminTabPesananBtn" onclick="switchAdminSubTab('pesanan')" class="w-1/2 py-2 font-semibold text-gray-500">Pesanan Masuk (<span id="orderCountBadge">0</span>)</button>
       </div>
 
-      <!-- Sub-Tab 1: Manajemen Menu Kue -->
+      <!-- Sub-Tab 1: Manajemen Kue -->
       <div id="adminKatalogSection" class="space-y-4">
         <button onclick="openAddCakeModal()" class="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg font-semibold text-sm flex items-center justify-center space-x-2 shadow">
           <i class="fa-solid fa-plus"></i>
@@ -141,7 +140,7 @@
         </div>
       </div>
 
-      <!-- Sub-Tab 2: Daftar Pesanan Masuk (US-08) -->
+      <!-- Sub-Tab 2: Pesanan Masuk (US-08) -->
       <div id="adminPesananSection" class="space-y-3 hidden">
         <div id="adminOrderList" class="space-y-3">
           <!-- Render via JS -->
@@ -151,7 +150,7 @@
 
   </main>
 
-  <!-- ================= MODAL PEMESANAN (PELANGGAN) ================= -->
+  <!-- ================= MODAL ORDER PELANGGAN ================= -->
   <div id="orderModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-xl">
       <div class="flex space-x-3 items-center">
@@ -171,15 +170,13 @@
         </div>
       </div>
 
-      <!-- Keterangan Pesanan (US-06) -->
       <div>
         <label class="text-xs font-semibold text-gray-600">Keterangan Khusus (Opsional)</label>
         <textarea id="orderNote" rows="2" class="w-full border rounded-lg p-2 text-sm mt-1 focus:ring-amber-500 focus:border-amber-500" placeholder="Misal: gula donat dikurangi, pisahkan saus, dll."></textarea>
       </div>
 
-      <!-- Alamat Pengiriman Otomatis (US-07) -->
       <div class="bg-amber-50/70 p-3 rounded-lg border border-amber-200 text-xs">
-        <span class="font-semibold text-gray-600">Alamat Pengiriman Akun:</span>
+        <span class="font-semibold text-gray-600">Alamat Pengiriman (Tersimpan di Akun):</span>
         <p id="modalAddressConfirm" class="text-gray-700 mt-1">Alamat...</p>
       </div>
 
@@ -198,18 +195,16 @@
     </div>
   </div>
 
-  <!-- ================= MODAL TAMBAH/EDIT KUE DENGAN FOTO (ADMIN) ================= -->
+  <!-- ================= MODAL TAMBAH/EDIT KUE (ADMIN) ================= -->
   <div id="cakeAdminModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-3 shadow-xl max-h-[90vh] overflow-y-auto">
       <h3 class="font-bold text-base text-gray-800" id="cakeModalTitle">Tambah Menu Baru</h3>
       <input type="hidden" id="editCakeId">
       
-      <!-- Input Upload Foto Manual -->
       <div>
         <label class="text-xs font-semibold text-gray-600">Foto Kue (Pilih dari HP/Laptop)</label>
         <input type="file" id="adminInputImageFile" accept="image/*" onchange="handleImageUpload(event)" class="w-full text-xs text-gray-500 mt-1 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-700 hover:file:bg-amber-200">
         
-        <!-- Pratinjau Foto -->
         <div id="imagePreviewContainer" class="mt-2 flex items-center space-x-3">
           <img id="imagePreview" src="" alt="Pratinjau" class="w-16 h-16 object-cover rounded-lg border">
           <span class="text-[11px] text-gray-400">Pratinjau foto kue</span>
@@ -237,19 +232,17 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // ================= PENGATURAN NOMOR WA PEMILIK =================
-    // Nomor HP yang baru (+62 821-1212-3230)
-    const OWNER_WHATSAPP_NUMBER = "6282112123230";
-
-    // Placeholder Gambar Default
+    // ================= NOMOR WA RESMI PEMILIK =================
+    const TARGET_WA_NUMBER = "6282112123230"; 
     const DEFAULT_CAKE_IMAGE = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&auto=format&fit=crop&q=60";
 
-    const defaultUsers = [
-      { id: 1, username: "admin", password: "161006D3", name: "Ibu Pemilik Toko", role: "admin", phone: OWNER_WHATSAPP_NUMBER, address: "D'Laura's Kitchen Pusat" },
-      { id: 2, username: "pelanggan", password: "123456", name: "Darryl Joshua", role: "customer", phone: "08987654321", address: "Jl. Boulevard No. 12, Manado" }
+    // Data Master
+    const initialDefaultUsers = [
+      { id: 1, username: "admin", password: "161006D3", name: "Ibu Pemilik Toko", role: "admin", phone: TARGET_WA_NUMBER, address: "D'Laura's Kitchen Pusat" },
+      { id: 2, username: "pelanggan", password: "123456", name: "Darryl Joshua", role: "customer", phone: "082121196711", address: "Jl. Boulevard No. 12, Manado" }
     ];
 
-    const defaultCakes = [
+    const initialDefaultCakes = [
       { id: 1, name: "Klappertaart Original", price: 25000, status: "tersedia", desc: "Kelapa muda lembut, kismis, taburan almond & kayu manis.", image: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=300&auto=format&fit=crop&q=60" },
       { id: 2, name: "Panada Isi Cakalang", price: 5000, status: "tersedia", desc: "Roti goreng lembut isi suwiran ikan cakalang bumbu rica.", image: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=300&auto=format&fit=crop&q=60" },
       { id: 3, name: "Donat Gula Manado", price: 4000, status: "tersedia", desc: "Donat empuk bertabur gula salju manis pas.", image: "https://images.unsplash.com/photo-1527515862127-a4fc05baf7a5?w=300&auto=format&fit=crop&q=60" },
@@ -257,28 +250,44 @@
       { id: 5, name: "Kue Balapis Pandan", price: 15000, status: "tersedia", desc: "Lapis lembut harum pandan suji dan santan kelapa murni.", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&auto=format&fit=crop&q=60" }
     ];
 
-    let users = JSON.parse(localStorage.getItem("dlk_users")) || defaultUsers;
-    
-    // Pastikan password admin tersinkronisasi ke 161006D3
-    const adminAccount = users.find(u => u.username === "admin");
-    if (adminAccount) {
-      adminAccount.password = "161006D3";
+    // Fungsi Aman Load/Save Users
+    function getStoredUsers() {
+      try {
+        const u = localStorage.getItem("dlk_users");
+        if (u) {
+          const parsed = JSON.parse(u);
+          // Pastikan admin selalu update ke nomor dan password baru
+          const adm = parsed.find(x => x.username === "admin");
+          if (adm) {
+            adm.password = "161006D3";
+            adm.phone = TARGET_WA_NUMBER;
+          }
+          return parsed;
+        }
+      } catch (e) {}
+      return initialDefaultUsers;
     }
 
-    let cakes = JSON.parse(localStorage.getItem("dlk_cakes")) || defaultCakes;
+    function saveUsers(uList) {
+      try {
+        localStorage.setItem("dlk_users", JSON.stringify(uList));
+      } catch (e) {}
+    }
+
+    let cakes = JSON.parse(localStorage.getItem("dlk_cakes")) || initialDefaultCakes;
     let orders = JSON.parse(localStorage.getItem("dlk_orders")) || [];
     let currentUser = JSON.parse(localStorage.getItem("dlk_currentUser")) || null;
-
     let tempUploadedImageBase64 = "";
 
-    function persistData() {
-      localStorage.setItem("dlk_users", JSON.stringify(users));
-      localStorage.setItem("dlk_cakes", JSON.stringify(cakes));
-      localStorage.setItem("dlk_orders", JSON.stringify(orders));
-      localStorage.setItem("dlk_currentUser", JSON.stringify(currentUser));
+    function persistCakesAndOrders() {
+      try {
+        localStorage.setItem("dlk_cakes", JSON.stringify(cakes));
+        localStorage.setItem("dlk_orders", JSON.stringify(orders));
+        localStorage.setItem("dlk_currentUser", JSON.stringify(currentUser));
+      } catch (e) {}
     }
 
-    // ================= FITUR KOMPRESI & UPLOAD FOTO =================
+    // ================= FOTO HANDLER =================
     function handleImageUpload(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -287,7 +296,6 @@
       reader.onload = function(evt) {
         const img = new Image();
         img.onload = function() {
-          // Kompresi otomatis gambar ke canvas (max lebar/tinggi 350px)
           const canvas = document.createElement("canvas");
           const maxDim = 350;
           let width = img.width;
@@ -310,7 +318,6 @@
           const ctx = canvas.getContext("2d");
           ctx.drawImage(img, 0, 0, width, height);
 
-          // Simpan hasil kompresi format JPEG kualitas 0.75
           tempUploadedImageBase64 = canvas.toDataURL("image/jpeg", 0.75);
           document.getElementById("imagePreview").src = tempUploadedImageBase64;
         };
@@ -319,7 +326,7 @@
       reader.readAsDataURL(file);
     }
 
-    // ================= TAMPILAN VIEW =================
+    // ================= VIEW HANDLER =================
     function updateUI() {
       const headerActions = document.getElementById("userHeaderActions");
       const viewAuth = document.getElementById("viewAuth");
@@ -337,7 +344,7 @@
         viewAdmin.classList.remove("hidden");
         headerActions.innerHTML = `
           <div class="flex items-center space-x-2">
-            <span>Admin: <b>${currentUser.username}</b></span>
+            <span>Admin</span>
             <button onclick="handleLogout()" class="bg-red-700 hover:bg-red-800 px-2 py-1 rounded text-white font-bold text-[11px]">Keluar</button>
           </div>
         `;
@@ -357,7 +364,7 @@
       }
     }
 
-    // ================= AUTHENTICATION =================
+    // ================= AUTHENTICATION (BISA LOGIN USERNAME / NO WA) =================
     function switchAuthTab(type) {
       if (type === 'login') {
         document.getElementById("loginForm").classList.remove("hidden");
@@ -374,16 +381,25 @@
 
     function handleLogin(e) {
       e.preventDefault();
-      const u = document.getElementById("loginUsername").value.trim();
-      const p = document.getElementById("loginPassword").value.trim();
+      const input = document.getElementById("loginUsername").value.trim().toLowerCase();
+      const pass = document.getElementById("loginPassword").value.trim();
+      const inputDigits = input.replace(/\D/g, ""); // Hanya angka jika mengetik no HP
 
-      const user = users.find(x => x.username.toLowerCase() === u.toLowerCase() && x.password === p);
-      if (user) {
-        currentUser = user;
-        persistData();
+      const userList = getStoredUsers();
+
+      // Cek apakah username cocok ATAU nomor whatsapp cocok
+      const found = userList.find(x => {
+        const matchUser = x.username && x.username.toLowerCase() === input;
+        const matchPhone = x.phone && inputDigits.length > 5 && x.phone.replace(/\D/g, "").includes(inputDigits.slice(-8));
+        return (matchUser || matchPhone) && x.password === pass;
+      });
+
+      if (found) {
+        currentUser = found;
+        persistCakesAndOrders();
         updateUI();
       } else {
-        alert("Username atau password salah!");
+        alert("Username/No. WhatsApp atau kata sandi salah!");
       }
     }
 
@@ -395,8 +411,10 @@
       const address = document.getElementById("regAddress").value.trim();
       const password = document.getElementById("regPassword").value.trim();
 
-      if (users.some(x => x.username.toLowerCase() === username.toLowerCase())) {
-        alert("Username sudah terpakai!");
+      const userList = getStoredUsers();
+
+      if (userList.some(x => x.username.toLowerCase() === username.toLowerCase())) {
+        alert("Username sudah terpakai, silakan gunakan username lain!");
         return;
       }
 
@@ -410,17 +428,21 @@
         role: "customer"
       };
 
-      users.push(newUser);
+      userList.push(newUser);
+      saveUsers(userList);
+
+      // Otomatis login ke akun baru
       currentUser = newUser;
-      persistData();
-      alert("Akun berhasil dibuat! Selamat datang di D'Laura's Kitchen.");
+      persistCakesAndOrders();
+
+      alert("Pendaftaran berhasil! Selamat datang, " + name);
       updateUI();
     }
 
     function handleLogout() {
       if (confirm("Ingin keluar dari akun?")) {
         currentUser = null;
-        persistData();
+        localStorage.removeItem("dlk_currentUser");
         updateUI();
       }
     }
@@ -429,14 +451,18 @@
       const newAddress = prompt("Perbarui alamat akun Anda:", currentUser.address);
       if (newAddress && newAddress.trim() !== "") {
         currentUser.address = newAddress.trim();
-        const idx = users.findIndex(u => u.id === currentUser.id);
-        if (idx !== -1) users[idx].address = currentUser.address;
-        persistData();
+        const userList = getStoredUsers();
+        const idx = userList.findIndex(u => u.id === currentUser.id);
+        if (idx !== -1) {
+          userList[idx].address = currentUser.address;
+          saveUsers(userList);
+        }
+        persistCakesAndOrders();
         updateUI();
       }
     }
 
-    // ================= MODUL ADMIN: KATALOG KUE =================
+    // ================= MODUL ADMIN =================
     function switchAdminSubTab(tab) {
       if (tab === 'katalog') {
         document.getElementById("adminKatalogSection").classList.remove("hidden");
@@ -494,7 +520,7 @@
       const cake = cakes.find(c => c.id === id);
       if (cake) {
         cake.status = cake.status === "tersedia" ? "kosong" : "tersedia";
-        persistData();
+        persistCakesAndOrders();
         renderAdminCakes();
       }
     }
@@ -557,7 +583,7 @@
         });
       }
 
-      persistData();
+      persistCakesAndOrders();
       closeCakeAdminModal();
       renderAdminCakes();
     }
@@ -565,12 +591,12 @@
     function deleteCake(id) {
       if (confirm("Hapus kue ini dari daftar menu?")) {
         cakes = cakes.filter(c => c.id !== id);
-        persistData();
+        persistCakesAndOrders();
         renderAdminCakes();
       }
     }
 
-    // ================= MODUL PELANGGAN: PEMESANAN =================
+    // ================= MODUL PELANGGAN =================
     let activeOrderCake = null;
     let activeQty = 1;
 
@@ -638,6 +664,7 @@
       document.getElementById("modalTotalPrice").innerText = "Rp " + total.toLocaleString('id-ID');
     }
 
+    // ================= PENGIRIMAN WA KE 6282112123230 =================
     function confirmOrderAndRedirectWA() {
       const note = document.getElementById("orderNote").value.trim();
       const total = activeOrderCake.price * activeQty;
@@ -655,10 +682,9 @@
       };
 
       orders.unshift(newOrder);
-      persistData();
+      persistCakesAndOrders();
       closeOrderModal();
 
-      // Format Pesan WhatsApp Khusus D'Laura's Kitchen
       const waMessage = 
 `*PESANAN D'LAURA'S KITCHEN*
 ----------------------------------
@@ -678,8 +704,9 @@ Halo Bu, saya ingin memesan kue:
 ----------------------------------
 Mohon konfirmasi pesanannya ya Bu, terima kasih!`;
 
+      // Menggunakan nomor langsung tanpa perantara
       const encodedMsg = encodeURIComponent(waMessage);
-      const waUrl = `https://wa.me/${OWNER_WHATSAPP_NUMBER}?text=${encodedMsg}`;
+      const waUrl = `https://wa.me/${TARGET_WA_NUMBER}?text=${encodedMsg}`;
       window.location.href = waUrl;
     }
 
