@@ -10,7 +10,7 @@
 </head>
 <body class="bg-gray-50 font-sans text-gray-800 pb-16 min-h-screen flex flex-col">
 
-  <!-- ================= TOP BAR (RESPONSIF) ================= -->
+  <!-- ================= TOP BAR ================= -->
   <header class="bg-amber-600 text-white shadow-md sticky top-0 z-50">
     <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center space-x-2">
@@ -23,10 +23,10 @@
     </div>
   </header>
 
-  <!-- Container Utama: Menyesuaikan Layar Lebar -->
+  <!-- Container Utama -->
   <main class="max-w-5xl mx-auto w-full flex-1 p-4 md:p-6">
 
-    <!-- ================= 1. VIEW AUTH (LOGIN & REGISTER) ================= -->
+    <!-- ================= 1. VIEW AUTH ================= -->
     <section id="viewAuth" class="max-w-md mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 my-6 space-y-6">
       <div class="text-center">
         <h2 class="text-2xl font-bold text-gray-800">D'Laura's Kitchen</h2>
@@ -148,7 +148,7 @@
         </div>
       </div>
 
-      <!-- Sub-Tab 2: Pesanan Masuk dengan Fitur Tracking Status -->
+      <!-- Sub-Tab 2: Pesanan Masuk dengan Status Pesanan & Pembayaran -->
       <div id="adminPesananSection" class="space-y-4 hidden">
         <div id="adminOrderList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Render via JS -->
@@ -660,7 +660,7 @@
       document.getElementById("modalTotalPrice").innerText = "Rp " + total.toLocaleString('id-ID');
     }
 
-    // ================= FITUR PEMESANAN DENGAN STATUS DEFAULT =================
+    // ================= PEMESANAN DENGAN STATUS AWAL =================
     function confirmOrderAndRedirectWA() {
       const note = document.getElementById("orderNote").value.trim();
       const total = activeOrderCake.price * activeQty;
@@ -675,7 +675,8 @@
         qty: activeQty,
         totalPrice: total,
         notes: note || "Tidak ada catatan khusus",
-        status: "Belum Diantar" // Status awal pesanan baru
+        status: "Pesanan Diterima",      // Istilah baru pengiriman
+        paymentStatus: "Belum Lunas"      // Status pembayaran default
       };
 
       orders.unshift(newOrder);
@@ -706,11 +707,20 @@ Mohon konfirmasi pesanannya ya Bu, terima kasih!`;
       window.location.href = waUrl;
     }
 
-    // ================= FUNGSI UPDATE STATUS PESANAN (ADMIN) =================
+    // ================= FUNGSI UPDATE STATUS ADMIN =================
     function changeOrderStatus(orderId, newStatus) {
       const ord = orders.find(o => o.id === orderId);
       if (ord) {
         ord.status = newStatus;
+        persistCakesAndOrders();
+        renderAdminOrders();
+      }
+    }
+
+    function changePaymentStatus(orderId, newPaymentStatus) {
+      const ord = orders.find(o => o.id === orderId);
+      if (ord) {
+        ord.paymentStatus = newPaymentStatus;
         persistCakesAndOrders();
         renderAdminOrders();
       }
@@ -724,21 +734,31 @@ Mohon konfirmasi pesanannya ya Bu, terima kasih!`;
       }
     }
 
-    // Helper warna badge status
+    // Style Badge Pengiriman
     function getStatusBadgeStyle(status) {
       switch (status) {
-        case 'Sementara Dibuat':
+        case 'Sedang Disiapkan':
           return 'bg-blue-100 text-blue-700 border-blue-200';
-        case 'Dalam Perjalanan':
+        case 'Sedang Diantar':
           return 'bg-purple-100 text-purple-700 border-purple-200';
+        case 'Selesai / Diterima':
         case 'Selesai Diantar':
           return 'bg-green-100 text-green-700 border-green-200';
-        default: // 'Belum Diantar'
+        default: // 'Pesanan Diterima'
           return 'bg-amber-100 text-amber-700 border-amber-200';
       }
     }
 
-    // ================= RENDER PESANAN MASUK ADMIN DENGAN STATUS =================
+    // Style Badge Pembayaran
+    function getPaymentBadgeStyle(payStatus) {
+      if (payStatus === 'Lunas') {
+        return 'bg-emerald-100 text-emerald-800 border-emerald-300';
+      } else {
+        return 'bg-rose-100 text-rose-700 border-rose-300';
+      }
+    }
+
+    // ================= RENDER PESANAN MASUK (ADMIN) =================
     function renderAdminOrders() {
       const container = document.getElementById("adminOrderList");
       document.getElementById("orderCountBadge").innerText = orders.length;
@@ -750,28 +770,43 @@ Mohon konfirmasi pesanannya ya Bu, terima kasih!`;
       }
 
       orders.forEach(ord => {
-        const currentStatus = ord.status || "Belum Diantar";
-        const badgeClass = getStatusBadgeStyle(currentStatus);
+        // Normalisasi status lama ke istilah baru
+        let currentStatus = ord.status || "Pesanan Diterima";
+        if (currentStatus === "Belum Diantar") currentStatus = "Pesanan Diterima";
+        if (currentStatus === "Sementara Dibuat") currentStatus = "Sedang Disiapkan";
+        if (currentStatus === "Dalam Perjalanan") currentStatus = "Sedang Diantar";
+        if (currentStatus === "Selesai Diantar") currentStatus = "Selesai / Diterima";
+
+        const currentPayment = ord.paymentStatus || "Belum Lunas";
+
+        const deliveryBadge = getStatusBadgeStyle(currentStatus);
+        const paymentBadge = getPaymentBadgeStyle(currentPayment);
 
         const div = document.createElement("div");
-        div.className = "p-4 border rounded-2xl bg-white shadow-sm space-y-3 text-xs flex flex-col justify-between";
+        div.className = "p-4 border rounded-2xl bg-white shadow-sm space-y-3 text-xs flex flex-col justify-between hover:shadow transition";
         div.innerHTML = `
           <div>
-            <!-- Header Kartu: ID, Tanggal & Badge Status Terkini -->
-            <div class="flex justify-between items-start border-b pb-2">
+            <!-- Header Kartu: ID, Tanggal & Dua Badge Status -->
+            <div class="flex justify-between items-start border-b pb-2.5">
               <div>
                 <span class="font-bold text-gray-800 text-sm">${ord.id} - ${ord.customerName}</span>
                 <p class="text-gray-400 text-[11px]">${ord.date}</p>
               </div>
-              <span class="px-2.5 py-1 rounded-full font-bold border text-[11px] ${badgeClass}">
-                ${currentStatus}
-              </span>
+              <div class="flex flex-col items-end space-y-1">
+                <!-- Badge Pengiriman -->
+                <span class="px-2.5 py-0.5 rounded-full font-bold border text-[10px] ${deliveryBadge}">
+                  ${currentStatus}
+                </span>
+                <!-- Badge Pembayaran -->
+                <span class="px-2 py-0.5 rounded-md font-bold border text-[10px] ${paymentBadge}">
+                  ${currentPayment === 'Lunas' ? '✓ Lunas' : '⏳ Belum Lunas'}
+                </span>
+              </div>
             </div>
 
-            <!-- Detail Kue & Biaya -->
+            <!-- Detail Pesanan -->
             <p class="mt-2.5"><b class="text-amber-700 text-sm">${ord.cakeName}</b> (${ord.qty} pcs) - <b class="text-gray-800">Rp ${ord.totalPrice.toLocaleString('id-ID')}</b></p>
             
-            <!-- Detail Keterangan & Alamat -->
             <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100 mt-2 space-y-1">
               <p><b>Catatan Khusus:</b> "${ord.notes}"</p>
               <p><b>Alamat Pengiriman:</b> ${ord.address}</p>
@@ -779,20 +814,38 @@ Mohon konfirmasi pesanannya ya Bu, terima kasih!`;
             </div>
           </div>
 
-          <!-- Bagian Ubah Status & Hapus Pesanan -->
-          <div class="border-t pt-3 mt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div class="flex items-center space-x-1.5">
-              <span class="font-semibold text-gray-600 text-[11px]">Ubah Status:</span>
-              <select onchange="changeOrderStatus('${ord.id}', this.value)" class="border rounded-lg p-1.5 text-xs font-bold bg-gray-50 focus:ring-amber-500 focus:border-amber-500">
-                <option value="Belum Diantar" ${currentStatus === 'Belum Diantar' ? 'selected' : ''}>⏳ Belum Diantar</option>
-                <option value="Sementara Dibuat" ${currentStatus === 'Sementara Dibuat' ? 'selected' : ''}>👨‍🍳 Sementara Dibuat</option>
-                <option value="Dalam Perjalanan" ${currentStatus === 'Dalam Perjalanan' ? 'selected' : ''}>🛵 Dalam Perjalanan</option>
-                <option value="Selesai Diantar" ${currentStatus === 'Selesai Diantar' ? 'selected' : ''}>✅ Selesai Diantar</option>
-              </select>
+          <!-- Pengaturan Status (Pengiriman & Pembayaran) -->
+          <div class="border-t pt-3 mt-2 space-y-2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              
+              <!-- 1. Dropdown Pengiriman -->
+              <div>
+                <label class="text-[10px] font-bold text-gray-500 uppercase">Status Pengiriman:</label>
+                <select onchange="changeOrderStatus('${ord.id}', this.value)" class="w-full mt-0.5 border rounded-lg p-1.5 text-xs font-semibold bg-gray-50 focus:ring-amber-500 focus:border-amber-500">
+                  <option value="Pesanan Diterima" ${currentStatus === 'Pesanan Diterima' ? 'selected' : ''}>📝 Pesanan Diterima</option>
+                  <option value="Sedang Disiapkan" ${currentStatus === 'Sedang Disiapkan' ? 'selected' : ''}>👨‍🍳 Sedang Disiapkan</option>
+                  <option value="Sedang Diantar" ${currentStatus === 'Sedang Diantar' ? 'selected' : ''}>🛵 Sedang Diantar</option>
+                  <option value="Selesai / Diterima" ${currentStatus === 'Selesai / Diterima' ? 'selected' : ''}>✨ Selesai / Diterima</option>
+                </select>
+              </div>
+
+              <!-- 2. Dropdown Pembayaran (Lunas / Kasbon) -->
+              <div>
+                <label class="text-[10px] font-bold text-gray-500 uppercase">Status Pembayaran:</label>
+                <select onchange="changePaymentStatus('${ord.id}', this.value)" class="w-full mt-0.5 border rounded-lg p-1.5 text-xs font-semibold bg-gray-50 focus:ring-amber-500 focus:border-amber-500">
+                  <option value="Belum Lunas" ${currentPayment === 'Belum Lunas' ? 'selected' : ''}>⏳ Belum Lunas (Tempo)</option>
+                  <option value="Lunas" ${currentPayment === 'Lunas' ? 'selected' : ''}>💳 Lunas (Terverifikasi)</option>
+                </select>
+              </div>
+
             </div>
-            <button onclick="deleteOrder('${ord.id}')" class="text-red-500 hover:text-red-700 text-[11px] font-semibold text-right">
-              Hapus
-            </button>
+
+            <!-- Tombol Hapus -->
+            <div class="flex justify-end pt-1">
+              <button onclick="deleteOrder('${ord.id}')" class="text-red-500 hover:text-red-700 text-[11px] font-semibold">
+                Hapus Pesanan
+              </button>
+            </div>
           </div>
         `;
         container.appendChild(div);
