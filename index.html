@@ -8,27 +8,29 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-100 font-sans text-gray-800 pb-16">
+<body class="bg-gray-50 font-sans text-gray-800 pb-16 min-h-screen flex flex-col">
 
-  <!-- ================= TOP BAR ================= -->
-  <header class="bg-amber-600 text-white p-4 shadow-md sticky top-0 z-50 flex justify-between items-center max-w-md mx-auto">
-    <div class="flex items-center space-x-2">
-      <i class="fa-solid fa-cake-candles text-2xl text-amber-200"></i>
-      <h1 class="font-bold text-lg tracking-wide">D'Laura's Kitchen</h1>
-    </div>
-    <div id="userHeaderActions" class="text-xs">
-      <!-- Diisi oleh JS -->
+  <!-- ================= TOP BAR (RESPONSIF) ================= -->
+  <header class="bg-amber-600 text-white shadow-md sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-cake-candles text-2xl text-amber-200"></i>
+        <h1 class="font-bold text-lg md:text-xl tracking-wide">D'Laura's Kitchen</h1>
+      </div>
+      <div id="userHeaderActions" class="text-xs md:text-sm">
+        <!-- Diisi oleh JS -->
+      </div>
     </div>
   </header>
 
-  <!-- Container Utama -->
-  <main class="max-w-md mx-auto min-h-screen bg-white shadow-lg relative p-4">
+  <!-- Container Utama: Menyesuaikan Layar Lebar -->
+  <main class="max-w-5xl mx-auto w-full flex-1 p-4 md:p-6">
 
     <!-- ================= 1. VIEW AUTH (LOGIN & REGISTER) ================= -->
-    <section id="viewAuth" class="space-y-6 py-6">
+    <section id="viewAuth" class="max-w-md mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 my-6 space-y-6">
       <div class="text-center">
         <h2 class="text-2xl font-bold text-gray-800">D'Laura's Kitchen</h2>
-        <p class="text-sm text-gray-500 mt-1">Pesan aneka kue lezat khas Manado</p>
+        <p class="text-sm text-gray-500 mt-1">Pesan aneka kue khas Manado lezat & praktis</p>
       </div>
 
       <!-- Tab Switch -->
@@ -41,18 +43,18 @@
       <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
         <div>
           <label class="text-xs font-semibold text-gray-600">Username atau No. WhatsApp</label>
-          <input type="text" id="loginUsername" required class="w-full mt-1 p-2 border rounded-lg focus:ring-amber-500 focus:border-amber-500" placeholder="Ketik username / no wa">
+          <input type="text" id="loginUsername" required class="w-full mt-1 p-2.5 border rounded-lg focus:ring-amber-500 focus:border-amber-500 text-sm" placeholder="Ketik username / no WhatsApp">
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600">Password</label>
-          <input type="password" id="loginPassword" required class="w-full mt-1 p-2 border rounded-lg focus:ring-amber-500 focus:border-amber-500" placeholder="••••••••">
+          <input type="password" id="loginPassword" required class="w-full mt-1 p-2.5 border rounded-lg focus:ring-amber-500 focus:border-amber-500 text-sm" placeholder="••••••••">
         </div>
-        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg font-semibold shadow">Masuk</button>
+        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2.5 rounded-lg font-semibold shadow transition">Masuk</button>
         
-        <div class="bg-amber-50 border border-amber-200 p-2.5 rounded-lg text-xs text-amber-800 mt-2">
+        <div class="bg-amber-50 border border-amber-200 p-3 rounded-lg text-xs text-amber-800 mt-2">
           <strong>Demo Akun Pelanggan:</strong><br>
           • <b>Username:</b> <code>pelanggan</code> | <b>Password:</b> <code>123456</code><br>
-          <span class="text-[11px] text-gray-500 italic">*Atau gunakan akun baru yang sudah kamu daftarkan.</span>
+          <span class="text-[11px] text-gray-500 italic">*Atau gunakan akun baru yang kamu daftarkan.</span>
         </div>
       </form>
 
@@ -60,89 +62,97 @@
       <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3 hidden">
         <div>
           <label class="text-xs font-semibold text-gray-600">Nama Lengkap</label>
-          <input type="text" id="regName" required class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Nama Anda">
+          <input type="text" id="regName" required class="w-full mt-1 p-2.5 border rounded-lg text-sm" placeholder="Nama Anda">
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600">Username</label>
-          <input type="text" id="regUsername" required class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Contoh: darryl">
+          <input type="text" id="regUsername" required class="w-full mt-1 p-2.5 border rounded-lg text-sm" placeholder="Contoh: darryl">
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600">No. WhatsApp</label>
-          <input type="tel" id="regPhone" required class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Contoh: 082121196711">
+          <input type="tel" id="regPhone" required class="w-full mt-1 p-2.5 border rounded-lg text-sm" placeholder="Contoh: 082121196711">
         </div>
         <div>
-          <label class="text-xs font-semibold text-gray-600">Alamat Lengkap Pengiriman (Tersimpan otomatis)</label>
-          <textarea id="regAddress" required rows="2" class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Contoh: E1 lantai 14 No 03"></textarea>
+          <label class="text-xs font-semibold text-gray-600">Alamat Lengkap Pengiriman</label>
+          <textarea id="regAddress" required rows="2" class="w-full mt-1 p-2.5 border rounded-lg text-sm" placeholder="Alamat rumah lengkap"></textarea>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600">Password</label>
-          <input type="password" id="regPassword" required class="w-full mt-1 p-2 border rounded-lg text-sm" placeholder="Buat kata sandi">
+          <input type="password" id="regPassword" required class="w-full mt-1 p-2.5 border rounded-lg text-sm" placeholder="Buat kata sandi">
         </div>
-        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg font-semibold shadow">Daftar Akun Baru</button>
+        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2.5 rounded-lg font-semibold shadow transition">Daftar Akun Baru</button>
       </form>
     </section>
 
-    <!-- ================= 2. VIEW PELANGGAN ================= -->
-    <section id="viewPelanggan" class="space-y-4 hidden">
-      <!-- Mini Profil & Alamat -->
-      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex justify-between items-start">
-        <div>
-          <p class="text-[11px] text-amber-700 font-medium">Pelanggan Aktif:</p>
-          <h3 id="custNameDisplay" class="font-bold text-gray-800 text-sm">Nama Pelanggan</h3>
-          <p id="custAddressDisplay" class="text-xs text-gray-600 mt-1 flex items-start">
-            <i class="fa-solid fa-location-dot text-amber-600 mr-1 mt-0.5"></i> 
-            <span id="custAddressText">Alamat...</span>
-          </p>
+    <!-- ================= 2. VIEW PELANGGAN (RESPONSIF) ================= -->
+    <section id="viewPelanggan" class="space-y-6 hidden">
+      <!-- Info Header Pelanggan & Banner (Grid di Tablet/Laptop) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Profil Mini -->
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex justify-between items-start md:col-span-1 shadow-sm">
+          <div>
+            <p class="text-[11px] text-amber-700 font-medium">Pelanggan Aktif:</p>
+            <h3 id="custNameDisplay" class="font-bold text-gray-800 text-base">Nama Pelanggan</h3>
+            <p id="custAddressDisplay" class="text-xs text-gray-600 mt-1 flex items-start">
+              <i class="fa-solid fa-location-dot text-amber-600 mr-1.5 mt-0.5"></i> 
+              <span id="custAddressText">Alamat...</span>
+            </p>
+          </div>
+          <button onclick="editAddressModal()" class="text-xs text-amber-700 font-semibold underline shrink-0 ml-2">Ubah</button>
         </div>
-        <button onclick="editAddressModal()" class="text-xs text-amber-700 font-semibold underline shrink-0 ml-2">Ubah</button>
+
+        <!-- Banner Toko -->
+        <div class="bg-gradient-to-r from-amber-600 to-amber-700 text-white p-5 rounded-2xl shadow md:col-span-2 flex flex-col justify-center">
+          <h4 class="font-bold text-lg md:text-xl">Menu Spesial D'Laura's Kitchen</h4>
+          <p class="text-xs md:text-sm opacity-90 mt-1">Pilih aneka kue favoritmu, kami buatkan segar dan langsung kirim detail pesanan ke WhatsApp!</p>
+        </div>
       </div>
 
-      <!-- Banner Toko -->
-      <div class="bg-gradient-to-r from-amber-600 to-amber-700 text-white p-4 rounded-xl shadow">
-        <h4 class="font-bold text-base">Menu D'Laura's Kitchen</h4>
-        <p class="text-xs opacity-90 mt-1">Pilih kue dan langsung kirim pesananmu ke WhatsApp resmi kami!</p>
-      </div>
-
-      <!-- List Kue Pelanggan -->
+      <!-- Daftar Kue: 1 kolom di HP, 2 di Tablet, 3 di Laptop -->
       <div>
-        <h3 class="font-bold text-gray-700 mb-3 flex items-center">
+        <h3 class="font-bold text-gray-800 text-base md:text-lg mb-4 flex items-center">
           <i class="fa-solid fa-utensils mr-2 text-amber-600"></i> Menu Kue Hari Ini
         </h3>
-        <div id="customerCakeList" class="space-y-3">
+        <div id="customerCakeList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <!-- Render via JS -->
         </div>
       </div>
     </section>
 
-    <!-- ================= 3. VIEW ADMIN ================= -->
-    <section id="viewAdmin" class="space-y-4 hidden">
-      <div class="bg-gray-800 text-white p-3 rounded-xl flex justify-between items-center">
+    <!-- ================= 3. VIEW ADMIN (RESPONSIF) ================= -->
+    <section id="viewAdmin" class="space-y-6 hidden">
+      <div class="bg-gray-800 text-white p-4 rounded-2xl flex justify-between items-center shadow">
         <div>
           <span class="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider">Akses Khusus Admin</span>
-          <h3 class="font-bold text-sm mt-1">Pengelolaan D'Laura's Kitchen</h3>
+          <h3 class="font-bold text-base mt-1">Pengelolaan Usaha D'Laura's Kitchen</h3>
         </div>
       </div>
 
-      <div class="flex border-b border-gray-200 text-sm">
-        <button id="adminTabKueBtn" onclick="switchAdminSubTab('katalog')" class="w-1/2 py-2 font-bold text-amber-600 border-b-2 border-amber-600">Daftar Kue</button>
-        <button id="adminTabPesananBtn" onclick="switchAdminSubTab('pesanan')" class="w-1/2 py-2 font-semibold text-gray-500">Pesanan Masuk (<span id="orderCountBadge">0</span>)</button>
+      <!-- Tab Menu Admin -->
+      <div class="flex border-b border-gray-200 text-sm font-medium">
+        <button id="adminTabKueBtn" onclick="switchAdminSubTab('katalog')" class="py-2.5 px-6 font-bold text-amber-600 border-b-2 border-amber-600">Daftar Menu Kue</button>
+        <button id="adminTabPesananBtn" onclick="switchAdminSubTab('pesanan')" class="py-2.5 px-6 text-gray-500 hover:text-amber-600">Pesanan Masuk (<span id="orderCountBadge">0</span>)</button>
       </div>
 
-      <!-- Sub-Tab 1: Manajemen Kue -->
+      <!-- Sub-Tab 1: Manajemen Menu -->
       <div id="adminKatalogSection" class="space-y-4">
-        <button onclick="openAddCakeModal()" class="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg font-semibold text-sm flex items-center justify-center space-x-2 shadow">
-          <i class="fa-solid fa-plus"></i>
-          <span>Tambah Menu Kue Baru</span>
-        </button>
+        <div class="flex justify-between items-center">
+          <h4 class="font-bold text-gray-700 text-sm md:text-base">Katalog Menu</h4>
+          <button onclick="openAddCakeModal()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl font-semibold text-xs md:text-sm flex items-center space-x-2 shadow transition">
+            <i class="fa-solid fa-plus"></i>
+            <span>Tambah Menu Baru</span>
+          </button>
+        </div>
 
-        <div id="adminCakeList" class="space-y-3">
+        <!-- Grid Katalog Admin: 1 di HP, 2 di Tablet, 3 di Laptop -->
+        <div id="adminCakeList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <!-- Render via JS -->
         </div>
       </div>
 
       <!-- Sub-Tab 2: Pesanan Masuk (US-08) -->
-      <div id="adminPesananSection" class="space-y-3 hidden">
-        <div id="adminOrderList" class="space-y-3">
+      <div id="adminPesananSection" class="space-y-4 hidden">
+        <div id="adminOrderList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Render via JS -->
         </div>
       </div>
@@ -152,7 +162,7 @@
 
   <!-- ================= MODAL ORDER PELANGGAN ================= -->
   <div id="orderModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-xl">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-xl">
       <div class="flex space-x-3 items-center">
         <img id="modalCakeImg" src="" alt="Kue" class="w-16 h-16 rounded-xl object-cover border">
         <div>
@@ -172,7 +182,7 @@
 
       <div>
         <label class="text-xs font-semibold text-gray-600">Keterangan Khusus (Opsional)</label>
-        <textarea id="orderNote" rows="2" class="w-full border rounded-lg p-2 text-sm mt-1 focus:ring-amber-500 focus:border-amber-500" placeholder="Misal: gula donat dikurangi, pisahkan saus, dll."></textarea>
+        <textarea id="orderNote" rows="2" class="w-full border rounded-lg p-2.5 text-sm mt-1 focus:ring-amber-500 focus:border-amber-500" placeholder="Misal: gula donat dikurangi, pisahkan saus, dll."></textarea>
       </div>
 
       <div class="bg-amber-50/70 p-3 rounded-lg border border-amber-200 text-xs">
@@ -197,7 +207,7 @@
 
   <!-- ================= MODAL TAMBAH/EDIT KUE (ADMIN) ================= -->
   <div id="cakeAdminModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-3 shadow-xl max-h-[90vh] overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-3 shadow-xl max-h-[90vh] overflow-y-auto">
       <h3 class="font-bold text-base text-gray-800" id="cakeModalTitle">Tambah Menu Baru</h3>
       <input type="hidden" id="editCakeId">
       
@@ -213,15 +223,15 @@
 
       <div>
         <label class="text-xs font-semibold text-gray-600">Nama Kue</label>
-        <input type="text" id="adminInputName" class="w-full border rounded-lg p-2 text-sm mt-1" placeholder="Contoh: Panada Spesial">
+        <input type="text" id="adminInputName" class="w-full border rounded-lg p-2.5 text-sm mt-1" placeholder="Contoh: Panada Spesial">
       </div>
       <div>
         <label class="text-xs font-semibold text-gray-600">Harga (Rp)</label>
-        <input type="number" id="adminInputPrice" class="w-full border rounded-lg p-2 text-sm mt-1" placeholder="Contoh: 15000">
+        <input type="number" id="adminInputPrice" class="w-full border rounded-lg p-2.5 text-sm mt-1" placeholder="Contoh: 15000">
       </div>
       <div>
         <label class="text-xs font-semibold text-gray-600">Keterangan Singkat</label>
-        <input type="text" id="adminInputDesc" class="w-full border rounded-lg p-2 text-sm mt-1" placeholder="Isian cakalang gurih pedas">
+        <input type="text" id="adminInputDesc" class="w-full border rounded-lg p-2.5 text-sm mt-1" placeholder="Isian cakalang gurih pedas">
       </div>
       <div class="grid grid-cols-2 gap-2 pt-3">
         <button onclick="closeCakeAdminModal()" class="w-full bg-gray-200 text-gray-700 py-2 rounded-lg text-sm font-semibold">Batal</button>
@@ -232,11 +242,9 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // ================= NOMOR WA RESMI PEMILIK =================
     const TARGET_WA_NUMBER = "6282112123230"; 
     const DEFAULT_CAKE_IMAGE = "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&auto=format&fit=crop&q=60";
 
-    // Data Master
     const initialDefaultUsers = [
       { id: 1, username: "admin", password: "161006D3", name: "Ibu Pemilik Toko", role: "admin", phone: TARGET_WA_NUMBER, address: "D'Laura's Kitchen Pusat" },
       { id: 2, username: "pelanggan", password: "123456", name: "Darryl Joshua", role: "customer", phone: "082121196711", address: "Jl. Boulevard No. 12, Manado" }
@@ -250,13 +258,11 @@
       { id: 5, name: "Kue Balapis Pandan", price: 15000, status: "tersedia", desc: "Lapis lembut harum pandan suji dan santan kelapa murni.", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&auto=format&fit=crop&q=60" }
     ];
 
-    // Fungsi Aman Load/Save Users
     function getStoredUsers() {
       try {
         const u = localStorage.getItem("dlk_users");
         if (u) {
           const parsed = JSON.parse(u);
-          // Pastikan admin selalu update ke nomor dan password baru
           const adm = parsed.find(x => x.username === "admin");
           if (adm) {
             adm.password = "161006D3";
@@ -287,7 +293,6 @@
       } catch (e) {}
     }
 
-    // ================= FOTO HANDLER =================
     function handleImageUpload(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -326,7 +331,6 @@
       reader.readAsDataURL(file);
     }
 
-    // ================= VIEW HANDLER =================
     function updateUI() {
       const headerActions = document.getElementById("userHeaderActions");
       const viewAuth = document.getElementById("viewAuth");
@@ -345,7 +349,7 @@
         headerActions.innerHTML = `
           <div class="flex items-center space-x-2">
             <span>Admin</span>
-            <button onclick="handleLogout()" class="bg-red-700 hover:bg-red-800 px-2 py-1 rounded text-white font-bold text-[11px]">Keluar</button>
+            <button onclick="handleLogout()" class="bg-red-700 hover:bg-red-800 px-3 py-1 rounded-lg text-white font-bold text-xs">Keluar</button>
           </div>
         `;
         renderAdminCakes();
@@ -356,15 +360,14 @@
         document.getElementById("custAddressText").innerText = currentUser.address;
         headerActions.innerHTML = `
           <div class="flex items-center space-x-2">
-            <span class="truncate max-w-[100px]">${currentUser.name}</span>
-            <button onclick="handleLogout()" class="bg-amber-800 hover:bg-amber-900 px-2 py-1 rounded text-white font-bold text-[11px]">Keluar</button>
+            <span class="truncate max-w-[120px] font-medium">${currentUser.name}</span>
+            <button onclick="handleLogout()" class="bg-amber-800 hover:bg-amber-900 px-3 py-1 rounded-lg text-white font-bold text-xs">Keluar</button>
           </div>
         `;
         renderCustomerCakes();
       }
     }
 
-    // ================= AUTHENTICATION (BISA LOGIN USERNAME / NO WA) =================
     function switchAuthTab(type) {
       if (type === 'login') {
         document.getElementById("loginForm").classList.remove("hidden");
@@ -383,11 +386,9 @@
       e.preventDefault();
       const input = document.getElementById("loginUsername").value.trim().toLowerCase();
       const pass = document.getElementById("loginPassword").value.trim();
-      const inputDigits = input.replace(/\D/g, ""); // Hanya angka jika mengetik no HP
+      const inputDigits = input.replace(/\D/g, "");
 
       const userList = getStoredUsers();
-
-      // Cek apakah username cocok ATAU nomor whatsapp cocok
       const found = userList.find(x => {
         const matchUser = x.username && x.username.toLowerCase() === input;
         const matchPhone = x.phone && inputDigits.length > 5 && x.phone.replace(/\D/g, "").includes(inputDigits.slice(-8));
@@ -412,9 +413,8 @@
       const password = document.getElementById("regPassword").value.trim();
 
       const userList = getStoredUsers();
-
       if (userList.some(x => x.username.toLowerCase() === username.toLowerCase())) {
-        alert("Username sudah terpakai, silakan gunakan username lain!");
+        alert("Username sudah terpakai, gunakan username lain!");
         return;
       }
 
@@ -430,8 +430,6 @@
 
       userList.push(newUser);
       saveUsers(userList);
-
-      // Otomatis login ke akun baru
       currentUser = newUser;
       persistCakesAndOrders();
 
@@ -462,18 +460,17 @@
       }
     }
 
-    // ================= MODUL ADMIN =================
     function switchAdminSubTab(tab) {
       if (tab === 'katalog') {
         document.getElementById("adminKatalogSection").classList.remove("hidden");
         document.getElementById("adminPesananSection").classList.add("hidden");
-        document.getElementById("adminTabKueBtn").className = "w-1/2 py-2 font-bold text-amber-600 border-b-2 border-amber-600";
-        document.getElementById("adminTabPesananBtn").className = "w-1/2 py-2 font-semibold text-gray-500";
+        document.getElementById("adminTabKueBtn").className = "py-2.5 px-6 font-bold text-amber-600 border-b-2 border-amber-600";
+        document.getElementById("adminTabPesananBtn").className = "py-2.5 px-6 text-gray-500 hover:text-amber-600";
       } else {
         document.getElementById("adminKatalogSection").classList.add("hidden");
         document.getElementById("adminPesananSection").classList.remove("hidden");
-        document.getElementById("adminTabPesananBtn").className = "w-1/2 py-2 font-bold text-amber-600 border-b-2 border-amber-600";
-        document.getElementById("adminTabKueBtn").className = "w-1/2 py-2 font-semibold text-gray-500";
+        document.getElementById("adminTabPesananBtn").className = "py-2.5 px-6 font-bold text-amber-600 border-b-2 border-amber-600";
+        document.getElementById("adminTabKueBtn").className = "py-2.5 px-6 text-gray-500 hover:text-amber-600";
       }
     }
 
@@ -486,28 +483,30 @@
         const cakeImg = cake.image || DEFAULT_CAKE_IMAGE;
 
         const div = document.createElement("div");
-        div.className = "p-3 border rounded-xl bg-white shadow-sm flex flex-col justify-between";
+        div.className = "p-4 border rounded-2xl bg-white shadow-sm flex flex-col justify-between hover:shadow transition";
         div.innerHTML = `
-          <div class="flex space-x-3 items-start">
-            <img src="${cakeImg}" alt="${cake.name}" class="w-16 h-16 rounded-xl object-cover border shrink-0">
-            <div class="flex-1">
-              <div class="flex justify-between items-start">
-                <h4 class="font-bold text-gray-800 text-sm">${cake.name}</h4>
-                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold ${isTersedia ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
-                  ${isTersedia ? 'Tersedia' : 'Kosong'}
-                </span>
+          <div>
+            <div class="flex space-x-3 items-start">
+              <img src="${cakeImg}" alt="${cake.name}" class="w-16 h-16 rounded-xl object-cover border shrink-0">
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <h4 class="font-bold text-gray-800 text-sm md:text-base">${cake.name}</h4>
+                  <span class="text-[10px] px-2 py-0.5 rounded-full font-bold ${isTersedia ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                    ${isTersedia ? 'Tersedia' : 'Kosong'}
+                  </span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1 line-clamp-2">${cake.desc}</p>
+                <p class="text-sm font-bold text-amber-600 mt-1.5">Rp ${cake.price.toLocaleString('id-ID')}</p>
               </div>
-              <p class="text-xs text-gray-500 mt-0.5">${cake.desc}</p>
-              <p class="text-sm font-bold text-amber-600 mt-1">Rp ${cake.price.toLocaleString('id-ID')}</p>
             </div>
           </div>
 
-          <div class="flex items-center justify-between border-t pt-2 mt-3 text-xs">
-            <button onclick="toggleCakeStatus(${cake.id})" class="px-2.5 py-1 rounded font-semibold ${isTersedia ? 'bg-amber-100 text-amber-700 hover:bg-amber-200' : 'bg-green-100 text-green-700 hover:bg-green-200'}">
-              Tandai: ${isTersedia ? 'KOSONGKAN STOK' : 'SEDIAKAN STOK'}
+          <div class="flex items-center justify-between border-t pt-3 mt-4 text-xs">
+            <button onclick="toggleCakeStatus(${cake.id})" class="px-2.5 py-1.5 rounded-lg font-semibold ${isTersedia ? 'bg-amber-100 text-amber-700 hover:bg-amber-200' : 'bg-green-100 text-green-700 hover:bg-green-200'}">
+              Tandai: ${isTersedia ? 'KOSONG' : 'TERSEDIA'}
             </button>
             <div class="space-x-2">
-              <button onclick="openEditCakeModal(${cake.id})" class="text-blue-600 font-semibold hover:underline">Ubah / Ganti Foto</button>
+              <button onclick="openEditCakeModal(${cake.id})" class="text-blue-600 font-semibold hover:underline">Ubah</button>
               <button onclick="deleteCake(${cake.id})" class="text-red-500 font-semibold hover:underline">Hapus</button>
             </div>
           </div>
@@ -540,7 +539,7 @@
     function openEditCakeModal(id) {
       const cake = cakes.find(c => c.id === id);
       if (!cake) return;
-      document.getElementById("cakeModalTitle").innerText = "Ubah Data, Harga & Foto";
+      document.getElementById("cakeModalTitle").innerText = "Ubah Data & Foto";
       document.getElementById("editCakeId").value = cake.id;
       document.getElementById("adminInputName").value = cake.name;
       document.getElementById("adminInputPrice").value = cake.price;
@@ -596,7 +595,6 @@
       }
     }
 
-    // ================= MODUL PELANGGAN =================
     let activeOrderCake = null;
     let activeQty = 1;
 
@@ -609,20 +607,20 @@
         const cakeImg = cake.image || DEFAULT_CAKE_IMAGE;
 
         const card = document.createElement("div");
-        card.className = `p-3 border rounded-xl flex items-center space-x-3 ${isTersedia ? 'bg-white shadow-sm' : 'bg-gray-100 opacity-60'}`;
+        card.className = `p-4 border rounded-2xl flex items-center space-x-3.5 transition hover:shadow-md ${isTersedia ? 'bg-white shadow-sm' : 'bg-gray-100 opacity-60'}`;
         card.innerHTML = `
-          <img src="${cakeImg}" alt="${cake.name}" class="w-16 h-16 rounded-xl object-cover border shrink-0">
+          <img src="${cakeImg}" alt="${cake.name}" class="w-20 h-20 rounded-xl object-cover border shrink-0">
           <div class="flex-1">
             <div class="flex items-center space-x-1.5">
-              <h4 class="font-bold text-gray-800 text-sm">${cake.name}</h4>
-              ${!isTersedia ? '<span class="text-[9px] bg-red-100 text-red-600 px-1 py-0.5 rounded font-bold">KOSONG</span>' : ''}
+              <h4 class="font-bold text-gray-800 text-sm md:text-base">${cake.name}</h4>
+              ${!isTersedia ? '<span class="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">KOSONG</span>' : ''}
             </div>
-            <p class="text-[11px] text-gray-500 mt-0.5 line-clamp-1">${cake.desc}</p>
-            <p class="text-xs font-bold text-amber-600 mt-1">Rp ${cake.price.toLocaleString('id-ID')}</p>
+            <p class="text-xs text-gray-500 mt-1 line-clamp-2">${cake.desc}</p>
+            <p class="text-sm font-bold text-amber-600 mt-2">Rp ${cake.price.toLocaleString('id-ID')}</p>
           </div>
           <div>
             ${isTersedia ? `
-              <button onclick="openOrderModal(${cake.id})" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow flex items-center space-x-1">
+              <button onclick="openOrderModal(${cake.id})" class="bg-amber-600 hover:bg-amber-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow flex items-center space-x-1.5 transition">
                 <i class="fa-solid fa-cart-plus"></i>
                 <span>Pesan</span>
               </button>
@@ -664,7 +662,6 @@
       document.getElementById("modalTotalPrice").innerText = "Rp " + total.toLocaleString('id-ID');
     }
 
-    // ================= PENGIRIMAN WA KE 6282112123230 =================
     function confirmOrderAndRedirectWA() {
       const note = document.getElementById("orderNote").value.trim();
       const total = activeOrderCake.price * activeQty;
@@ -704,7 +701,6 @@ Halo Bu, saya ingin memesan kue:
 ----------------------------------
 Mohon konfirmasi pesanannya ya Bu, terima kasih!`;
 
-      // Menggunakan nomor langsung tanpa perantara
       const encodedMsg = encodeURIComponent(waMessage);
       const waUrl = `https://wa.me/${TARGET_WA_NUMBER}?text=${encodedMsg}`;
       window.location.href = waUrl;
@@ -716,20 +712,20 @@ Mohon konfirmasi pesanannya ya Bu, terima kasih!`;
       container.innerHTML = "";
 
       if (orders.length === 0) {
-        container.innerHTML = `<p class="text-center text-xs text-gray-400 py-6">Belum ada pesanan masuk.</p>`;
+        container.innerHTML = `<p class="text-center text-xs text-gray-400 py-6 md:col-span-2">Belum ada pesanan masuk.</p>`;
         return;
       }
 
       orders.forEach(ord => {
         const div = document.createElement("div");
-        div.className = "p-3 border rounded-xl bg-white shadow-sm space-y-1.5 text-xs";
+        div.className = "p-4 border rounded-2xl bg-white shadow-sm space-y-2 text-xs";
         div.innerHTML = `
-          <div class="flex justify-between font-bold text-gray-700 border-b pb-1">
+          <div class="flex justify-between font-bold text-gray-700 border-b pb-2">
             <span>${ord.id} - ${ord.customerName}</span>
             <span class="text-gray-400 font-normal text-[11px]">${ord.date}</span>
           </div>
           <p><b class="text-amber-700">${ord.cakeName}</b> (${ord.qty} pcs) - <b>Rp ${ord.totalPrice.toLocaleString('id-ID')}</b></p>
-          <div class="bg-amber-50/50 p-2 rounded border border-amber-100">
+          <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
             <p><b>Catatan Khusus:</b> "${ord.notes}"</p>
             <p class="mt-1"><b>Alamat Pengiriman:</b> ${ord.address}</p>
             <p><b>No. Kontak:</b> ${ord.customerPhone}</p>
