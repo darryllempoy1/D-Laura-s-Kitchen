@@ -84,9 +84,8 @@
       </form>
     </section>
 
-    <!-- ================= 2. VIEW PELANGGAN (RESPONSIF) ================= -->
+    <!-- ================= 2. VIEW PELANGGAN ================= -->
     <section id="viewPelanggan" class="space-y-6 hidden">
-      <!-- Info Header Pelanggan & Banner (Grid di Tablet/Laptop) -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <!-- Profil Mini -->
         <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex justify-between items-start md:col-span-1 shadow-sm">
@@ -108,7 +107,7 @@
         </div>
       </div>
 
-      <!-- Daftar Kue: 1 kolom di HP, 2 di Tablet, 3 di Laptop -->
+      <!-- Daftar Kue -->
       <div>
         <h3 class="font-bold text-gray-800 text-base md:text-lg mb-4 flex items-center">
           <i class="fa-solid fa-utensils mr-2 text-amber-600"></i> Menu Kue Hari Ini
@@ -119,7 +118,7 @@
       </div>
     </section>
 
-    <!-- ================= 3. VIEW ADMIN (RESPONSIF) ================= -->
+    <!-- ================= 3. VIEW ADMIN ================= -->
     <section id="viewAdmin" class="space-y-6 hidden">
       <div class="bg-gray-800 text-white p-4 rounded-2xl flex justify-between items-center shadow">
         <div>
@@ -144,13 +143,12 @@
           </button>
         </div>
 
-        <!-- Grid Katalog Admin: 1 di HP, 2 di Tablet, 3 di Laptop -->
         <div id="adminCakeList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <!-- Render via JS -->
         </div>
       </div>
 
-      <!-- Sub-Tab 2: Pesanan Masuk (US-08) -->
+      <!-- Sub-Tab 2: Pesanan Masuk dengan Fitur Tracking Status -->
       <div id="adminPesananSection" class="space-y-4 hidden">
         <div id="adminOrderList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Render via JS -->
@@ -662,6 +660,7 @@
       document.getElementById("modalTotalPrice").innerText = "Rp " + total.toLocaleString('id-ID');
     }
 
+    // ================= FITUR PEMESANAN DENGAN STATUS DEFAULT =================
     function confirmOrderAndRedirectWA() {
       const note = document.getElementById("orderNote").value.trim();
       const total = activeOrderCake.price * activeQty;
@@ -675,7 +674,8 @@
         cakeName: activeOrderCake.name,
         qty: activeQty,
         totalPrice: total,
-        notes: note || "Tidak ada catatan khusus"
+        notes: note || "Tidak ada catatan khusus",
+        status: "Belum Diantar" // Status awal pesanan baru
       };
 
       orders.unshift(newOrder);
@@ -706,6 +706,39 @@ Mohon konfirmasi pesanannya ya Bu, terima kasih!`;
       window.location.href = waUrl;
     }
 
+    // ================= FUNGSI UPDATE STATUS PESANAN (ADMIN) =================
+    function changeOrderStatus(orderId, newStatus) {
+      const ord = orders.find(o => o.id === orderId);
+      if (ord) {
+        ord.status = newStatus;
+        persistCakesAndOrders();
+        renderAdminOrders();
+      }
+    }
+
+    function deleteOrder(orderId) {
+      if (confirm("Hapus catatan pesanan ini?")) {
+        orders = orders.filter(o => o.id !== orderId);
+        persistCakesAndOrders();
+        renderAdminOrders();
+      }
+    }
+
+    // Helper warna badge status
+    function getStatusBadgeStyle(status) {
+      switch (status) {
+        case 'Sementara Dibuat':
+          return 'bg-blue-100 text-blue-700 border-blue-200';
+        case 'Dalam Perjalanan':
+          return 'bg-purple-100 text-purple-700 border-purple-200';
+        case 'Selesai Diantar':
+          return 'bg-green-100 text-green-700 border-green-200';
+        default: // 'Belum Diantar'
+          return 'bg-amber-100 text-amber-700 border-amber-200';
+      }
+    }
+
+    // ================= RENDER PESANAN MASUK ADMIN DENGAN STATUS =================
     function renderAdminOrders() {
       const container = document.getElementById("adminOrderList");
       document.getElementById("orderCountBadge").innerText = orders.length;
@@ -717,18 +750,49 @@ Mohon konfirmasi pesanannya ya Bu, terima kasih!`;
       }
 
       orders.forEach(ord => {
+        const currentStatus = ord.status || "Belum Diantar";
+        const badgeClass = getStatusBadgeStyle(currentStatus);
+
         const div = document.createElement("div");
-        div.className = "p-4 border rounded-2xl bg-white shadow-sm space-y-2 text-xs";
+        div.className = "p-4 border rounded-2xl bg-white shadow-sm space-y-3 text-xs flex flex-col justify-between";
         div.innerHTML = `
-          <div class="flex justify-between font-bold text-gray-700 border-b pb-2">
-            <span>${ord.id} - ${ord.customerName}</span>
-            <span class="text-gray-400 font-normal text-[11px]">${ord.date}</span>
+          <div>
+            <!-- Header Kartu: ID, Tanggal & Badge Status Terkini -->
+            <div class="flex justify-between items-start border-b pb-2">
+              <div>
+                <span class="font-bold text-gray-800 text-sm">${ord.id} - ${ord.customerName}</span>
+                <p class="text-gray-400 text-[11px]">${ord.date}</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-full font-bold border text-[11px] ${badgeClass}">
+                ${currentStatus}
+              </span>
+            </div>
+
+            <!-- Detail Kue & Biaya -->
+            <p class="mt-2.5"><b class="text-amber-700 text-sm">${ord.cakeName}</b> (${ord.qty} pcs) - <b class="text-gray-800">Rp ${ord.totalPrice.toLocaleString('id-ID')}</b></p>
+            
+            <!-- Detail Keterangan & Alamat -->
+            <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100 mt-2 space-y-1">
+              <p><b>Catatan Khusus:</b> "${ord.notes}"</p>
+              <p><b>Alamat Pengiriman:</b> ${ord.address}</p>
+              <p><b>No. Kontak:</b> ${ord.customerPhone}</p>
+            </div>
           </div>
-          <p><b class="text-amber-700">${ord.cakeName}</b> (${ord.qty} pcs) - <b>Rp ${ord.totalPrice.toLocaleString('id-ID')}</b></p>
-          <div class="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
-            <p><b>Catatan Khusus:</b> "${ord.notes}"</p>
-            <p class="mt-1"><b>Alamat Pengiriman:</b> ${ord.address}</p>
-            <p><b>No. Kontak:</b> ${ord.customerPhone}</p>
+
+          <!-- Bagian Ubah Status & Hapus Pesanan -->
+          <div class="border-t pt-3 mt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="flex items-center space-x-1.5">
+              <span class="font-semibold text-gray-600 text-[11px]">Ubah Status:</span>
+              <select onchange="changeOrderStatus('${ord.id}', this.value)" class="border rounded-lg p-1.5 text-xs font-bold bg-gray-50 focus:ring-amber-500 focus:border-amber-500">
+                <option value="Belum Diantar" ${currentStatus === 'Belum Diantar' ? 'selected' : ''}>⏳ Belum Diantar</option>
+                <option value="Sementara Dibuat" ${currentStatus === 'Sementara Dibuat' ? 'selected' : ''}>👨‍🍳 Sementara Dibuat</option>
+                <option value="Dalam Perjalanan" ${currentStatus === 'Dalam Perjalanan' ? 'selected' : ''}>🛵 Dalam Perjalanan</option>
+                <option value="Selesai Diantar" ${currentStatus === 'Selesai Diantar' ? 'selected' : ''}>✅ Selesai Diantar</option>
+              </select>
+            </div>
+            <button onclick="deleteOrder('${ord.id}')" class="text-red-500 hover:text-red-700 text-[11px] font-semibold text-right">
+              Hapus
+            </button>
           </div>
         `;
         container.appendChild(div);
